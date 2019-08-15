@@ -72,13 +72,22 @@ checaIdade(20)
      exemplo: https://api.github.com/users/diego3g/repos
 */
 
-function pesquisar()  {   
-    axios.get('https://api.github.com/users/' + document.getElementById('user').value + '/repos')
-    
-        .then(function(response) {
-            console.log(response.data);
+function pesquisar() {
+
+    var user = document.getElementById('user').value;
+
+    if (!user) return;
+
+    axios.get('https://api.github.com/users/' + user + '/repos')
+
+        .then(function (response) {
+            listarRepositorios(response.data);
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.warn(error);
         });
+}
+
+function listarRepositorios(data) {
+    var listElements = document.querySelector()
 }
