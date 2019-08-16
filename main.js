@@ -74,7 +74,7 @@ checaIdade(20)
 
 
 
-function pesquisar() {
+/*function pesquisar() {
     var user = document.getElementById('user').value;
     if (!user) return;
     axios.get('https://api.github.com/users/' + user + '/repos')
@@ -86,11 +86,65 @@ function pesquisar() {
         });
 }
 
-function listarRepositorios(data) {    
+function listarRepositorios(data) {
     for (item of data) {
         var textElement = document.createTextNode(item.name);
         var liElement = document.createElement('li');
-        liElement.appendChild(textElement);       
+        liElement.appendChild(textElement);
+        listElements.appendChild(liElement);
+    }
+}*/
+
+
+/*3º exercício
+A partir do resultado do exemplo anterior adicione um indicador de carregamento em tela 
+no lugarda lista apenas enquanto a requisição estiver acontecendo:<li>Carregando...</li>
+Além disso, adicione uma mensagem de erro em tela caso o usuário no Github não exista.
+Dica: Quando o usuário não existe, a requisição irá cair no .catch com código de erro 404*/
+
+function mostrarCarregamento() {
+    listElements.innerHTML = "";
+    var textElement = document.createTextNode("Caregando...");
+    var liElement = document.createElement('li');
+    liElement.appendChild(textElement);
+    listElements.appendChild(liElement);
+}
+
+function mostrarErro(codigo) {
+    listElements.innerHTML = "";
+    var textElement = "";
+
+    if (codigo === 404) {
+        textElement = document.createTextNode("Usuário não encontrado!");
+    } else {
+        textElement = document.createTextNode('Um erro ocorreu...');
+    }
+    var liElement = document.createElement('li');
+    liElement.appendChild(textElement);
+    listElements.appendChild(liElement);
+}
+
+
+function pesquisar() {
+    mostrarCarregamento();
+    var user = document.getElementById('user').value;
+    if (!user) return;
+    axios.get('https://api.github.com/users/' + user + '/repos')
+        .then(function (response) {
+            listarRepositorios(response.data);
+        })
+        .catch(function (response) {
+            console.warn(response);
+            mostrarErro(response.response.status);
+        });
+}
+
+function listarRepositorios(data) {
+    listElements.innerHTML = "";
+    for (item of data) {
+        var textElement = document.createTextNode(item.name);
+        var liElement = document.createElement('li');
+        liElement.appendChild(textElement);
         listElements.appendChild(liElement);
     }
 }
